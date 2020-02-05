@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 					style: 'compressed'
 				},
 				files: {
-					'gh-pages/styles/style.css': 'source/stylesheets/style.sass'
+					'gh-pages/styles/style.css': 'source/stylesheets/style.scss'
 				}
 			},
 			dist: {
@@ -28,8 +28,8 @@ module.exports = function(grunt) {
 					style: 'compressed'
 				},
 				files: {
-					'dist/timesheet.min.css': 'source/stylesheets/timesheet.sass',
-					'dist/timesheet-white.min.css': 'source/stylesheets/timesheet-white.sass'
+					'dist/timesheet.min.css': 'source/stylesheets/timesheet.scss',
+					'dist/timesheet-white.min.css': 'source/stylesheets/timesheet-white.scss'
 				}
 			}
 		},
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
 				}
 			},
 			styles: {
-				files: 'source/stylesheets/*.sass',
+				files: 'source/stylesheets/*.scss',
 				tasks: ['sass'],
 				options: {
 					interrupt: true,

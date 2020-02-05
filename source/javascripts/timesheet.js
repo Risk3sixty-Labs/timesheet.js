@@ -37,7 +37,7 @@
         '<span class="label">' + cur.label + '</span>'
       ].join('');
 
-      html.push('<li>' + line + '</li>');
+      html.push('<li><div class="bubble-wrapper">' + line + '</div></li>');
     }
 
     this.container.innerHTML += '<ul class="data">' + html.join('') + '</ul>';

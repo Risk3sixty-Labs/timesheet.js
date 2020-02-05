@@ -30,6 +30,11 @@ new Timesheet('timesheet', 2002, 2013, [
 
 `$ > bower install https://github.com/sbstjn/timesheet.js.git`
 
+## Requirements
+
+- NodeJS 6.17.1
+- Sass 1.10.0
+
 ## Grunt commands
 
 Use `grunt` to build all JavaScript and StyleSheet files located inside `dist/`. 

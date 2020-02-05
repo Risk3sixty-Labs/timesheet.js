@@ -29,7 +29,7 @@ app.get('/styles/timesheet-white.css', function(req, res) {
 
 app.get('/styles/style.css', function(req, res) {
   sass.render({
-    file: __dirname + '/source/stylesheets/style.sass',
+    file: __dirname + '/source/stylesheets/style.scss',
     outputStyle: req.query.style || ""
   }, function(err, result) {
     res.end(result.css.toString());
