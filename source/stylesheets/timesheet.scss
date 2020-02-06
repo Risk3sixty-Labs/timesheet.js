@@ -87,8 +87,12 @@
         font-size: 14px;
         padding-left: 5px;
         line-height: 21px;
-        color: rgba(151, 151, 150, 1);
+        // color: rgba(151, 151, 150, 1);
+        max-width: 100%;
+
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .bubble-wrapper {
@@ -112,6 +116,14 @@
         border-radius: 4px;
         margin: 0 10px 0 0;
         opacity: 0.7;
+
+        display: -ms-flexbox!important;
+        display: -webkit-box!important;
+        display: flex!important;
+      
+        -ms-flex-align: center!important;
+        -webkit-box-align: center!important;
+        align-items: center!important;
       }
     }
   }
@@ -135,6 +147,6 @@
   }
   .label {
     padding-left: 0px;
-    color: rgba(48, 48, 48, 1);
+    // color: rgba(48, 48, 48, 1);
   }
 }
