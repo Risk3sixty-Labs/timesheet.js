@@ -10,6 +10,7 @@
       min: min,
       max: max
     };
+    this.useMonths = this.year.max - this.year.min <= 2;
 
     this.parse(data || []);
 
@@ -25,7 +26,8 @@
    */
   Timesheet.prototype.insertData = function() {
     var html = [];
-    var widthMonth = this.container.querySelector('.scale section').offsetWidth;
+    var sectionWidth = this.container.querySelector('.scale section').offsetWidth;
+    var widthMonth = (this.useMonths) ? sectionWidth * 12 : sectionWidth;
 
     for (var n = 0, m = this.data.length; n < m; n++) {
       var cur = this.data[n];
@@ -50,8 +52,17 @@
   Timesheet.prototype.drawSections = function() {
     var html = [];
 
-    for (var c = this.year.min; c <= this.year.max; c++) {
-      html.push('<section>' + c + '</section>');
+    if (this.useMonths) {
+      for (var c = this.year.min; c <= this.year.max; c++) {
+        for (var m = 1; m <= 12; m++) {
+          var month = m.toString(); // (m < 10) ? '0' + m.toString() : m.toString();
+          html.push('<section class="month">' + month + '/' + c + '</section>');
+        }
+      }
+    } else {
+      for (var y = this.year.min; y <= this.year.max; y++) {
+        html.push('<section>' + y + '</section>');
+      }
     }
 
     this.container.className = 'timesheet color-scheme-default';
