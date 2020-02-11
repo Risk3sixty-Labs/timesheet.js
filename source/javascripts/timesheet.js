@@ -10,7 +10,7 @@
       min: min,
       max: max
     };
-    this.useMonths = this.year.max - this.year.min <= 2;
+    this.useMonths = (this.year.max - this.year.min) < 2;
 
     this.parse(data || []);
 
