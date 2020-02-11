@@ -26,8 +26,12 @@
    */
   Timesheet.prototype.insertData = function() {
     var html = [];
-    var sectionWidth = this.container.querySelector('.scale section').offsetWidth;
+    var scaleEl = this.container.querySelector('.scale');
+    var sectionEl = this.container.querySelector('.scale section');
+    var sectionWidth = sectionEl.offsetWidth;
     var widthMonth = (this.useMonths) ? sectionWidth * 12 : sectionWidth;
+
+    scaleEl.style.width = (scaleEl.childElementCount * (widthMonth + 2)).toString() + 'px';
 
     for (var n = 0, m = this.data.length; n < m; n++) {
       var cur = this.data[n];
