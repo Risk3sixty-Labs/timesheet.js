@@ -10,7 +10,7 @@
       min: min,
       max: max
     };
-    this.useMonths = (this.year.max - this.year.min) < 2;
+    this.useMonths = this.year.max - this.year.min < 2;
 
     this.parse(data || []);
 
@@ -31,7 +31,7 @@
     var sectionWidth = sectionEl.offsetWidth;
     var widthMonth = (this.useMonths) ? sectionWidth * 12 : sectionWidth;
 
-    scaleEl.style.width = (scaleEl.childElementCount * (widthMonth + 2)).toString() + 'px';
+    scaleEl.style.width = ((this.year.max - this.year.min) * (widthMonth + 2)).toString() + 'px';
 
     for (var n = 0, m = this.data.length; n < m; n++) {
       var cur = this.data[n];
