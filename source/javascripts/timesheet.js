@@ -37,7 +37,7 @@
 
     for (var n = 0, m = this.data.length; n < m; n++) {
       var cur = this.data[n];
-      var bubble = this.createBubble(widthMonth, this.year.min, cur.start, cur.end);
+      var bubble = this.createBubble(widthMonth, this.useMonths, this.year.min, cur.start, cur.end);
 
       var line = [
         '<span style="margin-left: ' + bubble.getStartOffset() + 'px; width: ' + bubble.getWidth() + 'px;" class="bubble bubble-' + (cur.type || 'default') + '" data-duration="' + (cur.end ? Math.round((cur.end-cur.start)/1000/60/60/24/39) : '') + '">',
@@ -80,12 +80,15 @@
    * Parse data string
    */
   Timesheet.prototype.parseDate = function(date) {
-    if (date.indexOf('/') === -1) {
+    var dateParts = date.split('/');
+    if (dateParts.length === 1) {
       date = new Date(parseInt(date, 10), 0, 1);
       date.hasMonth = false;
-    } else {
-      date = date.split('/');
-      date = new Date(parseInt(date[1], 10), parseInt(date[0], 10)-1, 1);
+    } else if (dateParts.length === 2) {
+      date = new Date(parseInt(dateParts[1], 10), parseInt(dateParts[0], 10)-1, 1);
+      date.hasMonth = true;
+    } else { // assumed to be MM/DD/YYYY
+      date = new Date(parseInt(dateParts[2], 10), parseInt(dateParts[0], 10)-1, parseInt(dateParts[1], 10));
       date.hasMonth = true;
     }
 
@@ -119,18 +122,19 @@
   /**
    * Wrapper for adding bubbles
    */
-  Timesheet.prototype.createBubble = function(wMonth, min, start, end) {
-    return new Bubble(wMonth, min, start, end);
+  Timesheet.prototype.createBubble = function(wMonth, useMonths, min, start, end) {
+    return new Bubble(wMonth, useMonths, min, start, end);
   };
 
   /**
    * Timesheet Bubble
    */
-  var Bubble = function(wMonth, min, start, end) {
+  var Bubble = function(wMonth, useMonths, min, start, end) {
     this.min = min;
     this.start = start;
     this.end = end;
     this.widthMonth = wMonth;
+    this.useMonths = useMonths;
   };
 
   /**
@@ -146,7 +150,12 @@
    * Calculate starting offset for bubble
    */
   Bubble.prototype.getStartOffset = function() {
-    return (this.widthMonth/12) * (12 * (this.start.getFullYear() - this.min) + this.start.getMonth());
+    var monthWidthPixels = this.widthMonth/12;
+    var monthOffset = monthWidthPixels * (12 * (this.start.getFullYear() - this.min) + this.start.getMonth());
+    if (this.useMonths) {
+      monthOffset = monthOffset + (monthWidthPixels * (this.start.getDate()/30));
+    }
+    return monthOffset;
   };
 
   /**
@@ -183,7 +192,14 @@
    * Get bubble's width in pixel
    */
   Bubble.prototype.getWidth = function() {
-    return (this.widthMonth/12) * this.getMonths();
+    var fullMonthsWidth = (this.widthMonth/12) * this.getMonths();
+    if (this.useMonths) {
+      var monthWidthPixels = this.widthMonth/12;
+      var subtractFromStart = monthWidthPixels * (this.start.getDate()/30);
+      var subtractFromEnd = monthWidthPixels - (monthWidthPixels * (this.end.getDate()/30));
+      fullMonthsWidth = fullMonthsWidth - subtractFromStart - subtractFromEnd;
+    }
+    return fullMonthsWidth;
   };
 
   /**
