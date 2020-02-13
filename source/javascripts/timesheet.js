@@ -219,7 +219,8 @@
     var html = htmlString || '';
     var div = document.createElement('div');
     div.innerHTML = html;
-    return div.textContent || div.innerText || '';
+    var cleanStr = div.textContent || div.innerText || '';
+    return cleanStr.replace(/(\r\n|\n)/g, ' ').replace(/\s\s/g, ' ');
   };
 
   window.Timesheet = Timesheet;
