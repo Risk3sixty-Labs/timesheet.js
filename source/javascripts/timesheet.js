@@ -40,7 +40,7 @@
       var bubble = this.createBubble(widthMonth, this.useMonths, this.year.min, cur.start, cur.end);
 
       var line = [
-        '<span style="margin-left: ' + bubble.getStartOffset() + 'px; width: ' + bubble.getWidth() + 'px;" class="bubble bubble-' + (cur.type || 'default') + '" data-duration="' + (cur.end ? Math.round((cur.end-cur.start)/1000/60/60/24/39) : '') + '">',
+        '<span title="' + cur.label + '" style="margin-left: ' + bubble.getStartOffset() + 'px; width: ' + bubble.getWidth() + 'px;" class="bubble bubble-' + (cur.type || 'default') + '" data-duration="' + (cur.end ? Math.round((cur.end-cur.start)/1000/60/60/24/39) : '') + '">',
         // '<span class="date">' + bubble.getDateLabel() + '</span> ',
         '<div class="label">' + cur.label + '</div>',
         '</span>'
