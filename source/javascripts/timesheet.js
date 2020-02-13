@@ -220,7 +220,7 @@
     var div = document.createElement('div');
     div.innerHTML = html;
     var cleanStr = div.textContent || div.innerText || '';
-    return cleanStr.replace(/(\r\n|\n)/g, ' ').replace(/\s\s/g, ' ');
+    return cleanStr.replace(/(\r\n|\n)/g, ' ').replace(/\s{2,}/g, ' ');
   };
 
   window.Timesheet = Timesheet;
