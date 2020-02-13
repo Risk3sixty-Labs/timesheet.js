@@ -40,7 +40,7 @@
       var bubble = this.createBubble(widthMonth, this.useMonths, this.year.min, cur.start, cur.end);
 
       var line = [
-        '<span title="' + cur.label + '" style="margin-left: ' + bubble.getStartOffset() + 'px; width: ' + bubble.getWidth() + 'px;" class="bubble bubble-' + (cur.type || 'default') + '" data-duration="' + (cur.end ? Math.round((cur.end-cur.start)/1000/60/60/24/39) : '') + '">',
+        '<span title="' + Bubble.getStringFromHtml(cur.label) + '" style="margin-left: ' + bubble.getStartOffset() + 'px; width: ' + bubble.getWidth() + 'px;" class="bubble bubble-' + (cur.type || 'default') + '" data-duration="' + (cur.end ? Math.round((cur.end-cur.start)/1000/60/60/24/39) : '') + '">',
         // '<span class="date">' + bubble.getDateLabel() + '</span> ',
         '<div class="label">' + cur.label + '</div>',
         '</span>'
@@ -210,6 +210,16 @@
       (this.start.hasMonth ? this.formatMonth(this.start.getMonth() + 1) + '/' : '' ) + this.start.getFullYear(),
       (this.end ? '-' + ((this.end.hasMonth ? this.formatMonth(this.end.getMonth() + 1) + '/' : '' ) + this.end.getFullYear()) : '')
     ].join('');
+  };
+
+  /**
+   * Use to strip out HTML from label for bubble title
+   */
+  Bubble.getStringFromHtml = function(htmlString) {
+    var html = htmlString || '';
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
   };
 
   window.Timesheet = Timesheet;
