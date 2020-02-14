@@ -32,7 +32,7 @@
     var widthMonth = (this.useMonths) ? sectionWidth * 12 : sectionWidth;
     var numSectionsInChart = document.querySelectorAll('.scale section').length;
 
-    this.scaleWidth = (numSectionsInChart * (widthMonth + 2)).toString() + 'px';
+    this.scaleWidth = (numSectionsInChart * (sectionWidth + 2)).toString() + 'px';
     scaleEl.style.width = this.scaleWidth;
 
     for (var n = 0, m = this.data.length; n < m; n++) {
