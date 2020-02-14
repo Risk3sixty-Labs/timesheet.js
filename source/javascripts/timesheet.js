@@ -30,9 +30,9 @@
     var sectionEl = this.container.querySelector('.scale section');
     var sectionWidth = sectionEl.offsetWidth;
     var widthMonth = (this.useMonths) ? sectionWidth * 12 : sectionWidth;
-    var numYearsInChart = (this.year.max - this.year.min) + 1;
+    var numSectionsInChart = document.querySelectorAll('.scale section').length;
 
-    this.scaleWidth = (numYearsInChart * (widthMonth + 2)).toString() + 'px';
+    this.scaleWidth = (numSectionsInChart * (widthMonth + 2)).toString() + 'px';
     scaleEl.style.width = this.scaleWidth;
 
     for (var n = 0, m = this.data.length; n < m; n++) {
