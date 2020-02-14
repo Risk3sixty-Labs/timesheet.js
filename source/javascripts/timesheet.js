@@ -58,14 +58,33 @@
    */
   Timesheet.prototype.drawSections = function() {
     var html = [];
+    var getLatestMonth = function(month, current) {
+      var thisYear = current.end.getFullYear();
+      var thisMonth = thisYear === this.year.max ? current.end.getMonth() : 0;
+      return Math.max(month, thisMonth);
+    };
 
     if (this.useMonths) {
+      var numMonths = 0;
       for (var c = this.year.min; c <= this.year.max; c++) {
-        for (var m = 1; m <= 12; m++) {
-          var month = m.toString(); // (m < 10) ? '0' + m.toString() : m.toString();
+        var lastMonth = 12;
+        if (c === this.year.max) {
+          lastMonth = this.data.reduce(getLatestMonth.bind(this), 0);
+        }
+
+        for (var m = 1; m <= lastMonth + 1; m++) {
+          numMonths++;
+          var month = m.toString();
           html.push('<section class="month">' + month + '/' + c + '</section>');
         }
       }
+
+      if (numMonths < 12) {
+        html = html.map(function(sectionHtml) {
+          return sectionHtml.replace('class="month"', 'class="month" style="width: ' + (18 - numMonths).toString() + 'vw"');
+        });
+      }
+
     } else {
       for (var y = this.year.min; y <= this.year.max; y++) {
         html.push('<section>' + y + '</section>');
