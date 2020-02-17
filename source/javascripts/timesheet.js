@@ -94,19 +94,19 @@
         var minOrMax = which === 'first' ? 'min' : 'max';
         var thisYear = current[startOrEnd].getFullYear();
         var thisMonth = thisYear === self.year[minOrMax] ? current[startOrEnd].getMonth() : month;
-        return Math[minOrMax](month, thisMonth + 1);
+        return Math[minOrMax](month, thisMonth);
       };
     }
 
     var firstMonth = 1;
     var lastMonth = 12;
     if (currentYear === this.year.min) {
-      firstMonth = this.data.reduce(getFirstOrLatestMonthInChart(this, 'first'), 12);
+      firstMonth = 1 + this.data.reduce(getFirstOrLatestMonthInChart(this, 'first'), 11);
       this.firstMonth = firstMonth;
     }
     
     if (currentYear === this.year.max) {
-      lastMonth = this.data.reduce(getFirstOrLatestMonthInChart(this, 'last'), 1);
+      lastMonth = 1 + this.data.reduce(getFirstOrLatestMonthInChart(this, 'last'), 0);
       this.lastMonth = lastMonth;
     }
 
