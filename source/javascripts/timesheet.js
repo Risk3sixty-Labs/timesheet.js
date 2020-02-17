@@ -93,7 +93,7 @@
         var startOrEnd = which === 'first' ? 'start' : 'end';
         var minOrMax = which === 'first' ? 'min' : 'max';
         var thisYear = current[startOrEnd].getFullYear();
-        var thisMonth = thisYear === self.year[minOrMax] ? current[startOrEnd].getMonth() : 0;
+        var thisMonth = thisYear === self.year[minOrMax] ? current[startOrEnd].getMonth() : month;
         return Math[minOrMax](month, thisMonth + 1);
       };
     }
