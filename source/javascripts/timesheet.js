@@ -40,7 +40,7 @@
       var bubble = this.createBubble(widthMonth, this.useMonths, this.year.min, cur.start, cur.end);
 
       var line = [
-        '<span title="' + Bubble.getStringFromHtml(cur.label) + '" style="margin-left: ' + bubble.getStartOffset() + 'px; width: ' + bubble.getWidth() + 'px;" class="bubble bubble-' + (cur.type || 'default') + '" data-duration="' + (cur.end ? Math.round((cur.end-cur.start)/1000/60/60/24/39) : '') + '">',
+        '<span title="' + Bubble.getStringFromHtml(cur.label) + '" style="margin-left: ' + bubble.getStartOffset(this.firstMonth) + 'px; width: ' + bubble.getWidth() + 'px;" class="bubble bubble-' + (cur.type || 'default') + '" data-duration="' + (cur.end ? Math.round((cur.end-cur.start)/1000/60/60/24/39) : '') + '">',
         // '<span class="date">' + bubble.getDateLabel() + '</span> ',
         '<div class="label">' + cur.label + '</div>',
         '</span>'
@@ -58,21 +58,13 @@
    */
   Timesheet.prototype.drawSections = function() {
     var html = [];
-    var getLatestMonth = function(month, current) {
-      var thisYear = current.end.getFullYear();
-      var thisMonth = thisYear === this.year.max ? current.end.getMonth() : 0;
-      return Math.max(month, thisMonth);
-    };
 
     if (this.useMonths) {
       var numMonths = 0;
       for (var c = this.year.min; c <= this.year.max; c++) {
-        var lastMonth = 12;
-        if (c === this.year.max) {
-          lastMonth = this.data.reduce(getLatestMonth.bind(this), 0);
-        }
+        var months = this.getFirstAndLastMonth(c);
 
-        for (var m = 1; m <= lastMonth + 1; m++) {
+        for (var m = months.first; m <= months.last + 1; m++) {
           numMonths++;
           var month = m.toString();
           html.push('<section class="month">' + month + '/' + c + '</section>');
@@ -93,6 +85,32 @@
 
     this.container.className = 'timesheet color-scheme-default';
     this.container.innerHTML = '<div class="scale">' + html.join('') + '</div>';
+  };
+
+  Timesheet.prototype.getFirstAndLastMonth = function(currentYear) {
+    function getFirstOrLatestMonthInChart(self, which) {
+      return function(month, current) {
+        var startOrEnd = which === 'first' ? 'start' : 'end';
+        var minOrMax = which === 'first' ? 'min' : 'max';
+        var thisYear = current[startOrEnd].getFullYear();
+        var thisMonth = thisYear === self.year[minOrMax] ? current[startOrEnd].getMonth() : 0;
+        return Math[minOrMax](month, thisMonth);
+      };
+    }
+
+    var firstMonth = 1;
+    var lastMonth = 11;
+    if (currentYear === this.year.min) {
+      firstMonth = this.data.reduce(getFirstOrLatestMonthInChart(this, 'first'), 12);
+      this.firstMonth = firstMonth;
+    }
+    
+    if (currentYear === this.year.max) {
+      lastMonth = this.data.reduce(getFirstOrLatestMonthInChart(this, 'last'), 0);
+      this.lastMonth = lastMonth;
+    }
+
+    return { first: firstMonth, last: lastMonth };
   };
 
   /**
@@ -168,9 +186,10 @@
   /**
    * Calculate starting offset for bubble
    */
-  Bubble.prototype.getStartOffset = function() {
+  Bubble.prototype.getStartOffset = function(firstMonthInChart) {
     var monthWidthPixels = this.widthMonth/12;
-    var monthOffset = monthWidthPixels * (12 * (this.start.getFullYear() - this.min) + this.start.getMonth());
+    var checkAgainstStartMonth = this.useMonths ? this.start.getMonth() - (firstMonthInChart - 1) : this.start.getMonth();
+    var monthOffset = monthWidthPixels * (12 * (this.start.getFullYear() - this.min) + checkAgainstStartMonth);
     if (this.useMonths) {
       monthOffset = monthOffset + (monthWidthPixels * (this.start.getDate()/30));
     }
