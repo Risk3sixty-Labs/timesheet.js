@@ -64,7 +64,7 @@
       for (var c = this.year.min; c <= this.year.max; c++) {
         var months = this.getFirstAndLastMonth(c);
 
-        for (var m = months.first; m <= months.last + 1; m++) {
+        for (var m = months.first; m <= months.last; m++) {
           numMonths++;
           var month = m.toString();
           html.push('<section class="month">' + month + '/' + c + '</section>');
@@ -94,19 +94,19 @@
         var minOrMax = which === 'first' ? 'min' : 'max';
         var thisYear = current[startOrEnd].getFullYear();
         var thisMonth = thisYear === self.year[minOrMax] ? current[startOrEnd].getMonth() : 0;
-        return Math[minOrMax](month, thisMonth);
+        return Math[minOrMax](month, thisMonth + 1);
       };
     }
 
     var firstMonth = 1;
-    var lastMonth = 11;
+    var lastMonth = 12;
     if (currentYear === this.year.min) {
       firstMonth = this.data.reduce(getFirstOrLatestMonthInChart(this, 'first'), 12);
       this.firstMonth = firstMonth;
     }
     
     if (currentYear === this.year.max) {
-      lastMonth = this.data.reduce(getFirstOrLatestMonthInChart(this, 'last'), 0);
+      lastMonth = this.data.reduce(getFirstOrLatestMonthInChart(this, 'last'), 1);
       this.lastMonth = lastMonth;
     }
 
